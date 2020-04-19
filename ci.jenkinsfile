@@ -19,7 +19,7 @@ pipeline{
         steps{
             script{
                 antHome = tool "ANT"
-                sh "${antHome}/bin/ant  ${buildShell} "
+                //sh "${antHome}/bin/ant  ${buildShell} "
                   }
               }
           }   
