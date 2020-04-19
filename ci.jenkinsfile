@@ -7,6 +7,7 @@ def deploy = new org.devops.deploy()
 
 String BuildType = "${env.buildType}"
 String BuildShell = "${env.buildShell}"
+String deployHosts = "${env.deployHosts}"
 
 pipeline{
     agent { node { label "master"}}
@@ -16,7 +17,7 @@ pipeline{
         steps{
             script{
                 build.Build(buildType,buildShell)
-                deploy.SaltDeploy("demo.insurware.alstru.com4.localdomain4","test.ping")
+                deploy.SaltDeploy("${deployHosts}","test.ping")
               }
           }
    
