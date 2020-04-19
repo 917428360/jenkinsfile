@@ -3,6 +3,7 @@
 @Library('jenkinsfile@master') _
 
 def build = new org.devops.build()
+def deploy = new org.deveops.deploy()
 
 String BuildType = "${env.buildType}"
 String BuildShell = "${env.buildShell}"
@@ -15,9 +16,11 @@ pipeline{
         steps{
             script{
                 build.Build(buildType,buildShell)
+                deploy.SaltDeploy("demo.insurware.alstru.com4.localdomain4","test.ping")
               }
           }
-    
+   
+                  
      /*  stage("antBuild"){
         steps{
             script{
