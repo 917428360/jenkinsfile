@@ -3,7 +3,7 @@
 @Library('jenkinsfile@master') _
 
 def build = new org.devops.build()
-def deploy = new org.deveops.deploy()
+def deploy = new org.devops.deploy()
 
 String BuildType = "${env.buildType}"
 String BuildShell = "${env.buildShell}"
