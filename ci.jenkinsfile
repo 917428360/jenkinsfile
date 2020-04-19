@@ -1,5 +1,5 @@
 #!groovy
-@Library('jenkinslibrary@master') _
+@Library('jenkinsfile@master') _
 
 def build = new src.org.devops.build()
 
