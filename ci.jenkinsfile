@@ -10,10 +10,18 @@ pipeline{
         steps{
             script{
                 def mvnHome = '/usr/local/apache-maven-3.6.0'
-                sh "${mvnHome}/bin/mvn  ${buildShell} "
+                //sh "${mvnHome}/bin/mvn  ${buildShell} "
                   }
               }
           }
     
+       stage("antBuild"){
+        steps{
+            script{
+                antHome = tool "ANT"
+                sh "${antHome}/bin/ant  ${buildShell} "
+                  }
+              }
+          }   
     }
 }
