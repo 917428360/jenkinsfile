@@ -2,9 +2,11 @@
 
 @Library('jenkinsfile@master') _
 
+//func from sharelibrary
 def build = new org.devops.build()
 def deploy = new org.devops.deploy()
 def tools = new org.devops.tools()
+def gitlab = new org.devops.gitlab()
 
 String BuildType = "${env.buildType}"
 String BuildShell = "${env.buildShell}"
@@ -26,6 +28,7 @@ pipeline{
                         branchName = branch - "refs/heads/"
                         
                         currentBuild.description = "Trigger by ${userName} ${ref}"
+                        gitlab.ChangeCommitStatus(projectId,commitSha,"running")
                     }
                     println("${branchName}")
                     
@@ -59,16 +62,19 @@ pipeline{
           success {
               script {
                 println("success")
+                    gitlab.ChangeCommitStatus(projectId,commitSha,"success")
               }
           }
-          success {
+          failure {
               script {
-                println("success")
+                println("failure")
+                   gitlab.ChangeCommitStatus(projectId,commitSha,"failed")
               }
           }
-          success {
+          aborted {
               script {
-                println("success")
+                println("aborted")
+                    gitlab.ChangeCommitStatus(projectId,commitSha,"canceled")
               }
           } 
      }
