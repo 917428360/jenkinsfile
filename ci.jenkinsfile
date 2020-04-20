@@ -9,19 +9,30 @@ String BuildType = "${env.buildType}"
 String BuildShell = "${env.buildShell}"
 String deployHosts = "${env.deployHosts}"
 
+String srcUrl = "${env.srcUrl}"
+String branchName = "${env.branchName}"
+
 pipeline{
     agent { node { label "master"}}
     
     stages{
-      stage("build"){
-        steps{
+        
+      stage("CheckOut"){
+         steps{
+            script{
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '1d092af9-a2e2-4731-8d62-6f03057f6018', url: 'https://code.alstru.cn/gexiaohu/demo-maven-service.git']]])
+              }
+          }
+      }   
+         
+     /*   steps{
             script{
                 build.Build(buildType,buildShell)
                 //deploy.SaltDeploy("${deployHosts}","test.ping")
                 deploy.AnsibleDeploy("${deployHosts}","-m ping")
               }
           }
-   
+     */
                   
      /*  stage("antBuild"){
         steps{
@@ -54,8 +65,8 @@ pipeline{
                 npmHome = tool "NPM"
                 sh "export NODE_HOME=${npmHome} && export PATH=\$NODE_HOME/bin:\$PATH && ${npmHome}/bin/npm  ${buildShell} "
                   }
-              }*/
-          }           
+              }
+          }    */       
     
     }
 }
