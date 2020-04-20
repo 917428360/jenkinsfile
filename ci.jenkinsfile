@@ -7,7 +7,7 @@ def build = new org.devops.build()
 def deploy = new org.devops.deploy()
 def tools = new org.devops.tools()
 def gitlab = new org.devops.gitlab()
-def toemail = new org.devopstoemail()
+def toemail = new org.devops.toemail()
 
 String BuildType = "${env.buildType}"
 String BuildShell = "${env.buildShell}"
