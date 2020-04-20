@@ -55,7 +55,7 @@ pipeline{
               steps{
                 script{
                     tools.PrintMes("代码扫描","green")
-                    sonar.SonarScan("test","${JOB_NAME}","${JOB_NAME}","src")
+                    sonar.SonarScan("test","${JOB_NAME}","${JOB_NAME}","src","${branchName}")
 
                   }
               }
