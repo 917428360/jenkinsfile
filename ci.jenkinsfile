@@ -8,6 +8,7 @@ def deploy = new org.devops.deploy()
 def tools = new org.devops.tools()
 def gitlab = new org.devops.gitlab()
 def toemail = new org.devops.toemail()
+def sonar = new org.devops.sonarqube()
 
 String BuildType = "${env.buildType}"
 String BuildShell = "${env.buildShell}"
@@ -49,7 +50,17 @@ pipeline{
                   }
               }
          }
-                  
+         
+        stage("QA"){
+              steps{
+                script{
+                      tools.PrintMes("代码扫描","green")
+                      sonar.SonarScan("${JOB_NAME}","${JOB_NAME}","src")
+
+                  }
+              }
+         }
+        
     
     }
     
