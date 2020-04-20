@@ -15,7 +15,7 @@ def SonarScan(projectName,projectDesc,projectPath){
             -Dsonar.sources=${projectPath} -Dsonar.sourceEncoding=UTF-8 -Dsonar.java.binaries=target/classes \
             -Dsonar.java.test.binaries=target/test-classes -Dsonar.java.surefire.report=target/surefire-reports 
         """
-    }
+    
     
     //def qg = waitForQualityGate()
     //if (qg.status != 'OK') {
