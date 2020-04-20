@@ -25,7 +25,7 @@ pipeline{
               }
           }   
 
-          stage("CheckOut"){
+          stage("Build"){
               steps{
                 script{
                     build.Build(buildType,buildShell)
