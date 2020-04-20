@@ -24,6 +24,8 @@ pipeline{
                     
                     if("${runOpts}" == "GitlabPush"){
                         branchName = branch - "refs/heads/"
+                        
+                        currentBuild.description = "Trigger by ${userName} ${ref}"
                     }
                     println("${branchName}")
                     
