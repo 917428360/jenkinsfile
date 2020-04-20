@@ -28,7 +28,7 @@ pipeline{
                     println("${branchName}")
                     
                     tools.PrintMes("获取代码","green")
-                    checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '1d092af9-a2e2-4731-8d62-6f03057f6018', url: 'https://code.alstru.cn/gexiaohu/demo-maven-service.git']]])
+                    checkout([$class: 'GitSCM', branches: [[name: "${branchName}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '1d092af9-a2e2-4731-8d62-6f03057f6018', url: 'https://code.alstru.cn/gexiaohu/demo-maven-service.git']]])
                   }
               }
           }   
