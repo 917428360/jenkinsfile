@@ -48,4 +48,29 @@ pipeline{
                   
     
     }
+    
+    post {
+          always {
+              script {
+                println("always")
+              }
+          }
+
+          success {
+              script {
+                println("success")
+              }
+          }
+          success {
+              script {
+                println("success")
+              }
+          }
+          success {
+              script {
+                println("success")
+              }
+          } 
+     }
+
 }
