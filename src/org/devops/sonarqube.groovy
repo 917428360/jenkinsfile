@@ -8,7 +8,7 @@ def SonarScan(projectName,projectDesc,projectPath){
         sonarDate = sonarDate - "\n"
             
         sh """ 
-            ${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=${projectName} \
+            ${scannerHome}/bin/sonar-scanner -Dsonar.host.url=${sonarServer} -Dsonar.projectKey=${projectName} \
             -Dsonar.projectName=${projectName} -Dsonar.projectVersion=${sonarDate} -Dsonar.ws.timeout=30 \
             -Dsonar.login=tiger -Dsonar.password=tiger899181 \
             -Dsonar.projectDescription=${projectDesc} -Dsonar.links.homepage=http://www.alstru.com \
