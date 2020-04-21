@@ -48,6 +48,30 @@ pipeline{
                       build.Build(buildType,buildShell)
                     //deploy.SaltDeploy("${deployHosts}","test.ping")
                     //deploy.AnsibleDeploy("${deployHosts}","-m ping")
+                    
+                    def jarName = sh returnStdout: true, script: "cd target;ls *.jar"
+                    jarName = jarName - "\n"
+
+                    def pom = readMavenPom file: 'pom.xml'
+                    pomVersion = "${pom.version}"
+                    pomArtifact = "${pom.artifactId}"
+                    pomPackaging = "${pom.packaging}"
+                    pomGroupId = "${pom.groupId}"
+
+                    println("${pomGroupId}-${pomArtifact}-${pomVersion}-${pomPackaging}")
+
+                    def mvnHome = tool "maven"
+                    sh  """ 
+                        cd target/
+                        ${mvnHome}/bin/mvn deploy:deploy-file -Dmaven.test.skip=true  \
+                                                -Dfile=${jarName} -DgroupId=${pomGroupId} \
+                                                -DartifactId=${pomArtifact} -Dversion=${pomVersion}  \
+                                                -Dpackaging=${pomPackaging} -DrepositoryId=maven-hostd \
+                                                -Durl=http://nexus.alstru.com//repository/maven-hostd 
+                    """
+                    
+                    
+                    
                   }
               }
          }
