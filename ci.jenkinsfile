@@ -60,7 +60,7 @@ pipeline{
 
                     println("${pomGroupId}-${pomArtifact}-${pomVersion}-${pomPackaging}")
 
-                    def mvnHome = tool "maven"
+                    /*def mvnHome = tool "maven"
                     sh  """ 
                         cd target/
                         ${mvnHome}/bin/mvn deploy:deploy-file -Dmaven.test.skip=true  \
@@ -68,7 +68,7 @@ pipeline{
                                                 -DartifactId=${pomArtifact} -Dversion=${pomVersion}  \
                                                 -Dpackaging=${pomPackaging} -DrepositoryId=maven-hostd \
                                                 -Durl=http://nexus.alstru.com/repository/maven-hostd 
-                    """
+                    """ */
                      //use nexus plugin
                     def repoName = "maven-hostd"
                     def filePath = "target/${jarName}"
