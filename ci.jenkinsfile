@@ -10,6 +10,7 @@ def gitlab = new org.devops.gitlab()
 def toemail = new org.devops.toemail()
 def sonar = new org.devops.sonarqube()
 def sonarapi = new org.devops.sonarapi()
+def nexus = new org.devops.nexus()
 
 String BuildType = "${env.buildType}"
 String BuildShell = "${env.buildShell}"
@@ -49,7 +50,7 @@ pipeline{
                     //deploy.SaltDeploy("${deployHosts}","test.ping")
                     //deploy.AnsibleDeploy("${deployHosts}","-m ping")
                     
-                    def jarName = sh returnStdout: true, script: "cd target;ls *.jar"
+                   /* def jarName = sh returnStdout: true, script: "cd target;ls *.jar"
                     jarName = jarName - "\n"
 
                     def pom = readMavenPom file: 'pom.xml'
@@ -60,7 +61,7 @@ pipeline{
 
                     println("${pomGroupId}-${pomArtifact}-${pomVersion}-${pomPackaging}")
 
-                    /*def mvnHome = tool "maven"
+                    def mvnHome = tool "maven"
                     sh  """ 
                         cd target/
                         ${mvnHome}/bin/mvn deploy:deploy-file -Dmaven.test.skip=true  \
@@ -68,7 +69,7 @@ pipeline{
                                                 -DartifactId=${pomArtifact} -Dversion=${pomVersion}  \
                                                 -Dpackaging=${pomPackaging} -DrepositoryId=maven-hostd \
                                                 -Durl=http://nexus.alstru.com/repository/maven-hostd 
-                    """ */
+                    """ 
                      //use nexus plugin
                     def repoName = "maven-hostd"
                     def filePath = "target/${jarName}"
@@ -83,8 +84,9 @@ pipeline{
                         protocol: 'http', 
                         repository: "${repoName}", 
                         version: "${pomVersion}"
+                    */
                     
-                    
+                    nexus.main("maven")
                   }
               }
          }
