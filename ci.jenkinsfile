@@ -67,7 +67,7 @@ pipeline{
                                                 -Dfile=${jarName} -DgroupId=${pomGroupId} \
                                                 -DartifactId=${pomArtifact} -Dversion=${pomVersion}  \
                                                 -Dpackaging=${pomPackaging} -DrepositoryId=maven-hostd \
-                                                -Durl=http://nexus.alstru.com//repository/maven-hostd 
+                                                -Durl=http://nexus.alstru.com/repository/maven-hostd 
                     """
                     
                     
