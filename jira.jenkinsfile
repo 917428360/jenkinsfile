@@ -1,0 +1,82 @@
+#!groovy
+
+@Library('jenkinsfile') _
+
+def gitlab = new org.devops.gitlab()
+
+pipeline {
+    agent { node { label "master"}}
+
+
+    stages{
+
+        stage("FileterData"){
+            steps{
+                script{
+                    response = readJSON text: """${webHookData}"""
+
+                    println(response)
+
+                    env.eventType = response["webhookEvent"]
+
+                    switch(eventType) {
+                        case "jira:issue_created":
+                            env.issueName = response['issue']['key']
+                            env.userName = response['user']['name']
+                            env.moduleNames = response['issue']['fields']['components']
+                            env.fixVersion = response['issue']['fields']['fixVersions']
+                            currentBuild.description = " Trigger by ${userName} ${eventType} ${issueName} "
+                            break
+
+                        default:
+                            println("hello")
+                    }
+                }
+            }
+        }
+        
+        stage("CreateBranch"){
+
+            when {
+                anyOf {
+                    environment name: 'eventType', value: 'jira:issue_created'   //issue 创建 /更新
+                    environment name: 'eventType', value: 'jira:issue_updated' 
+                }
+            }
+
+            steps{
+                script{
+                    def projectIds = []
+                    println(issueName)
+
+                    //获取项目Id
+                    def projects = readJSON text: """${moduleNames}"""
+                    for ( project in projects){
+                        println(project["name"])
+                        projectName = project["name"]
+                        currentBuild.description += "\n project: ${projectName}"
+                        repoName = projectName.split("-")[0]
+                        
+                        try {
+                            projectId = gitlab.GetProjectID(repoName, projectName)
+                            println(projectId)
+                            projectIds.add(projectId)   
+                        } catch(e){
+                            println(e)
+                            println("未获取到项目ID，请检查模块名称！")
+                        }
+                    } 
+
+                    println(projectIds)  
+
+                    
+                    for (id in projectIds){
+                        println("新建特性分支--> ${id} --> ${issueName}")
+                        currentBuild.description += "\n 新建特性分支--> ${id} --> ${issueName}"
+                        gitlab.CreateBranch(id,"master","${issueName}")
+                    }
+                }
+            }
+        }
+    }
+}
