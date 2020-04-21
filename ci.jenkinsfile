@@ -74,8 +74,8 @@ pipeline{
                     sonarapi.ConfigQualityGates("${JOB_NAME}",qpName)
                     
                     tools.PrintMes("代码扫描","green")
-                    //sonar.SonarScan("test","${JOB_NAME}","${JOB_NAME}","src","${branchName}")
-                    sonar.SonarScan("test","${JOB_NAME}","${JOB_NAME}","src")
+                    sonar.SonarScan("test","${JOB_NAME}","${JOB_NAME}","src","${branchName}")
+                    //sonar.SonarScan("test","${JOB_NAME}","${JOB_NAME}","src")
                                         sleep 30
                     tools.PrintMes("获取扫描结果","green")
                     result = sonarapi.GetProjectStatus("${JOB_NAME}")
