@@ -69,7 +69,20 @@ pipeline{
                                                 -Dpackaging=${pomPackaging} -DrepositoryId=maven-hostd \
                                                 -Durl=http://nexus.alstru.com/repository/maven-hostd 
                     """
-                    
+                     //use nexus plugin
+                    def repoName = "maven-hostd"
+                    def filePath = "target/${jarName}"
+                    nexusArtifactUploader artifacts: [[artifactId: "${pomArtifact}", 
+                                                        classifier: '', 
+                                                        file: "${filePath}", 
+                                                        type: "${pomPackaging}"]], 
+                        credentialsId: 'nexus3', 
+                        groupId: "${pomGroupId}", 
+                        nexusUrl: 'nexus.alstru.com', 
+                        nexusVersion: 'nexus3', 
+                        protocol: 'http', 
+                        repository: "${repoName}", 
+                        version: "${pomVersion}"
                     
                     
                   }
