@@ -1,6 +1,6 @@
 #!groovy
 
-@Library('jenkinsfile') _
+@Library('jenkinsfile@master') _
 
 def gitlab = new org.devops.gitlab()
 
