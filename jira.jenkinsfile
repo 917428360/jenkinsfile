@@ -29,6 +29,14 @@ pipeline {
                             currentBuild.description = " Trigger by ${userName} ${eventType} ${issueName} "
                             break
 
+                        case "jira:issue_updated":
+                            env.issueName = response['issue']['key']
+                            env.userName = response['user']['name']
+                            env.moduleNames = response['issue']['fields']['components']
+                            env.fixVersion = response['issue']['fields']['fixVersions']
+                            currentBuild.description = " Trigger by ${userName} ${eventType} ${issueName} "
+                            break
+                        
                         default:
                             println("hello")
                     }
