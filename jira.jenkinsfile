@@ -3,6 +3,7 @@
 @Library('jenkinsfile@master') _
 
 def gitlab = new org.devops.gitlab()
+def jira = new org.devops.jira()
 
 pipeline {
     agent { node { label "master"}}
