@@ -83,10 +83,7 @@ pipeline {
                         println("新建特性分支--> ${id} --> ${issueName}")
                         currentBuild.description += "\n 新建特性分支--> ${id} --> ${issueName}"
                         gitlab.CreateBranch(id,"master","${issueName}")
-                    }
-
-                    
-                      } else {
+                    } else {
                         fixVersion = fixVersion[0]['name']
                         println("Issue关联release操作,Jenkins创建合并请求")
                         currentBuild.description += "\n Issue关联release操作,Jenkins创建合并请求 \n ${issueName} --> RELEASE-${fixVersion}" 
