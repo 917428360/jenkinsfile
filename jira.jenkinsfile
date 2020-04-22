@@ -5,6 +5,7 @@
 def gitlab = new org.devops.gitlab()
 def jira = new org.devops.jira()
 
+
 pipeline {
     agent { node { label "master"}}
 
@@ -21,6 +22,11 @@ pipeline {
                     env.eventType = response["webhookEvent"]
 
                     switch(eventType) {
+                        case "jira:version_created":
+                            env.versionName = response["version"]["name"]
+                            currentBuild.description = " Trigger by  ${eventType} ${versionName} "
+                            break
+
                         case "jira:issue_created":
                             env.issueName = response['issue']['key']
                             env.userName = response['user']['name']
@@ -36,7 +42,12 @@ pipeline {
                             env.fixVersion = response['issue']['fields']['fixVersions']
                             currentBuild.description = " Trigger by ${userName} ${eventType} ${issueName} "
                             break
-                        
+                            
+                        case "jira:version_released":
+                            env.versionName = response["version"]["name"]
+                            currentBuild.description = " Trigger by  ${eventType} ${versionName} "
+                            break
+
                         default:
                             println("hello")
                     }
@@ -44,7 +55,75 @@ pipeline {
             }
         }
         
-        stage("CreateBranch"){
+
+        
+        stage("DeleteBranch"){
+            when {
+                environment name: 'eventType', value: 'jira:version_released'   
+            }
+            
+            steps{
+                script{
+                    //获取issuesName
+                    println("project%20%3D%20${projectKey}%20AND%20fixVersion%20%3D%20${versionName}%20AND%20issuetype%20%3D%20Task")
+                    response = jira.RunJql("project%20%3D%20${projectKey}%20AND%20fixVersion%20%3D%20${versionName}%20AND%20issuetype%20%3D%20Task")
+                    
+                    response = readJSON text: """${response.content}"""
+                    println(response)
+                    issues = [:]
+                    for ( issue in response['issues']){
+                        println(issue["key"])
+                        println(issue["fields"]["components"])
+                        issues[issue["key"]] = []
+                        
+                        //获取issue关联的模块
+                        for (component in issue["fields"]["components"] ){
+                            issues[issue["key"]].add(component["name"])
+                        }
+                    
+                    }
+                    
+                    println(issues)
+                    
+                    
+                    //搜索gitlab分支是否已合并然后删除
+                    
+                    
+                    for (issue in issues.keySet()){
+                        for (projectName in issues[issue]){
+                            repoName = projectName.split("-")[0]
+                            projectId = gitlab.GetProjectID(repoName, projectName)
+                            
+                            try {
+                                println("创建合并请求  RELEASE-${versionName}  ---> master")
+                                result = gitlab.CreateMr(projectId,"RELEASE-${versionName}","master","RELEASE-${versionName}--->master")
+                                result = readJSON text: """${result}"""
+                                mergeId = result["iid"]
+                                gitlab.AcceptMr(projectId,mergeId)
+                                
+                                sleep 15
+                            } catch(e){
+                                println(e)
+                            }
+                            response = gitlab.SearchProjectBranches(projectId,issue)
+                            
+                            println(response[projectId][0]['merged'])
+                            
+                            if (response[projectId][0]['merged'] == false){
+                                println("${projectName} --> ${issue} -->此分支未合并暂时忽略！")
+                            } else {
+                                println("${projectName} --> ${issue} -->此分支已合并准备清理！")
+                                gitlab.DeleteBranch(projectId,issue)
+                            }
+                        
+                        }
+
+                    }
+                }
+            }
+        }
+
+        stage("CreateBranchOrMR"){
 
             when {
                 anyOf {
@@ -57,6 +136,8 @@ pipeline {
                 script{
                     def projectIds = []
                     println(issueName)
+                    fixVersion = readJSON text: """${fixVersion}"""
+                    println(fixVersion.size())
 
                     //获取项目Id
                     def projects = readJSON text: """${moduleNames}"""
@@ -78,11 +159,16 @@ pipeline {
 
                     println(projectIds)  
 
-                    
-                    for (id in projectIds){
-                        println("新建特性分支--> ${id} --> ${issueName}")
-                        currentBuild.description += "\n 新建特性分支--> ${id} --> ${issueName}"
-                        gitlab.CreateBranch(id,"master","${issueName}")
+
+                    if (fixVersion.size() == 0) {
+                        for (id in projectIds){
+                            println("新建特性分支--> ${id} --> ${issueName}")
+                            currentBuild.description += "\n 新建特性分支--> ${id} --> ${issueName}"
+                            gitlab.CreateBranch(id,"master","${issueName}")
+                        }
+                            
+                        
+
                     } else {
                         fixVersion = fixVersion[0]['name']
                         println("Issue关联release操作,Jenkins创建合并请求")
@@ -100,8 +186,6 @@ pipeline {
                             
                         }
                     } 
-                
-
                 }
             }
         }
