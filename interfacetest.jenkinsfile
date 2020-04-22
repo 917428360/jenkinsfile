@@ -19,7 +19,7 @@ userEmail = "917428360@qq.com"
 
 //pipeline
 pipeline{
-    agent { node { label "maser"}}
+    agent { node { label "master"}}
     
     
     stages{
