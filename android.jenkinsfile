@@ -86,7 +86,7 @@ pipeline{
        
         //并行
        
-        /*stage("QA"){
+        stage("QA"){
             steps {
                 script{
                     tools.PrintMes("搜索项目","green")
@@ -126,7 +126,7 @@ pipeline{
                     }
                 }
            }
-        }*/
+        }
 
         //发布
         stage("Deploy"){
