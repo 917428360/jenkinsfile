@@ -11,7 +11,7 @@ def toemail = new org.devops.toemail()
 def sonar = new org.devops.sonarqube()
 def sonarapi = new org.devops.sonarapi()
 def nexus = new org.devops.nexus()
-def artifactory = new org.devops.artifactory() 
+//def artifactory = new org.devops.artifactory() 
 //def k8s = new org.devops.kubernetes()
 def android = new org.devops.android()
 
