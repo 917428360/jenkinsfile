@@ -206,6 +206,7 @@ pipeline{
                         messageUrl: 'http://www.baidu.com',
                         picUrl: 'https://www.picdiet.com/img/photographer_compressed.jpg'
                     )
+                 }
                 //test d3
                 
                 //test d4
