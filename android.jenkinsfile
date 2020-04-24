@@ -194,8 +194,7 @@ pipeline{
                     )
                 
                 //test d2
-                success {
-                    dingtalk (
+                 dingtalk (
                         robot: '47b2a5d1-ae17-45cb-8ea2-b70f9db10c71',
                         type: 'LINK',
                         title: '你有新的消息，请注意查收',
@@ -206,7 +205,7 @@ pipeline{
                         messageUrl: 'http://www.baidu.com',
                         picUrl: 'https://www.picdiet.com/img/photographer_compressed.jpg'
                     )
-                 }
+                 
                 //test d3
                 
                 //test d4
