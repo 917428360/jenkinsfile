@@ -179,7 +179,25 @@ pipeline{
                 pushplus (
                   "inner"
                 )
+                //test d1
                 slackSend channel: "#数字双胞胎自动通知", message: "Build 成功！: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                 dingtalk (
+                        robot: '47b2a5d1-ae17-45cb-8ea2-b70f9db10c71',
+                        type: 'TEXT',
+                        text: [
+                            '测试文本类型的消息',
+                            '分行显示，哈哈哈哈'
+                        ],
+                        at: [
+                            '13639087076'
+                        ]
+                    )
+                
+                //test d2
+                
+                //test d3
+                
+                //test d4
             }
         
         }
