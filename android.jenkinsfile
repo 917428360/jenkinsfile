@@ -229,6 +229,20 @@ pipeline{
                         ]
                     )
                 //test d4
+                dingtalk (
+                        robot: '47b2a5d1-ae17-45cb-8ea2-b70f9db10c71',
+                        type: 'ACTION_CARD',
+                        title: '你有新的消息，请注意查收',
+                        text: [
+                            '![screenshot](@lADOpwk3K80C0M0FoA)',
+                            '### 乔布斯 20 年前想打造的苹果咖啡厅 ',
+                            'Apple Store 的设计正从原来满满的科技感走向生活化，而其生活化的走向其实可以追溯到 20 年前苹果一个建立咖啡馆的计划'
+                        ],
+                        singleTitle: '查看更多',
+                        singleUrl: 'https://liuweigl.github.io/dingtalk-plugin/'
+                    )
+                //test d5
+                
             }
         
         }
