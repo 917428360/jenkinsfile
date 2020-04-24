@@ -168,6 +168,14 @@ pipeline{
                     gitlab.ChangeCommitStatus(projectId,commitSha,"success")
                 }
                 toemail.Email("流水线成功",userEmail)
+                //test 
+                emailext to: 'xiaohu.ge@alstru.com', subject: "Job [${env.JOB_NAME}] - Status: ${currentBuild.result?: 'success'}", body: 
+                """
+                <p>EXECUTED: Job <b>\' ${env.JOB_NAME}：${env.BUILD_NUMBER}\'
+                </b></p><p>View console output at "<a href= "${env.BUILD_URL}">
+                ${env.JOB_NAME}：${env.BUILD_NUMBER}</a>"</p>
+                <p><i>(Build log is attached.)</i></p>
+                """, attachLog: true, compressLog: true
                 pushplus (
                   "inner"
                 )
