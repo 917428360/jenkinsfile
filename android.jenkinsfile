@@ -179,6 +179,7 @@ pipeline{
                 pushplus (
                   "inner"
                 )
+                slackSend channel: "#数字双胞胎自动通知", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
             }
         
         }
