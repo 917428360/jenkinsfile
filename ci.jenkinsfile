@@ -128,7 +128,7 @@ pipeline{
                     
                     println(result)
                     if (result.toString() == "ERROR"){
-                        //toemail.Email("代码质量阈错误！请及时修复！",userEmail)
+                        toemail.Email("代码质量阈错误！请及时修复！",userEmail)
                         error " 代码质量阈错误！请及时修复！"
                     } else {
                         println(result)
@@ -153,15 +153,15 @@ pipeline{
               script {
                 println("success")
                     gitlab.ChangeCommitStatus(projectId,commitSha,"success")
-                    //toemail.Email("流水线成功",userEmail)
-                    toemail.Email("流水线成功","xiaohu.ge@alstru.com")
+                    toemail.Email("流水线成功",userEmail)
+                    //toemail.Email("流水线成功","xiaohu.ge@alstru.com")
               }
           }
           failure {
               script {
                 println("failure")
                    gitlab.ChangeCommitStatus(projectId,commitSha,"failed")
-                  // toemail.Email("流水线失败",userEmail)
+                   toemail.Email("流水线失败",userEmail)
                    
               }
           }
@@ -169,7 +169,7 @@ pipeline{
               script {
                 println("aborted")
                     gitlab.ChangeCommitStatus(projectId,commitSha,"canceled")
-                   // toemail.Email("流水线被取消了",userEmail)
+                    toemail.Email("流水线被取消了",userEmail)
               }
           } 
      }
