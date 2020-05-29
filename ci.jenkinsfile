@@ -45,7 +45,6 @@ pipeline{
                      userRemoteConfigs: [[credentialsId: 'gitlab-admin-user', url: "${srcUrl}"]]])
 
                 }
-                }
               }
           }   
 
